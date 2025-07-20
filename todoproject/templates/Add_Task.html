@@ -1,0 +1,87 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html>
+    <head>
+            <title>Add Task page</title>
+    </head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: url('static/images/home.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            background-color:rgb(236, 137, 137);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif; 
+        }
+        form {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+    </style>
+
+    <body>
+
+        <form method='POST'>
+            {% csrf_token %}
+
+            <h2>Add Task</h2>
+
+            <label>Enter your task</label>
+            {% render_field addtaskform.name %}
+
+            <label>Enter date</label>
+            {% render_field addtaskform.date %}
+
+            <button type='submit'>Submit</button>
+        </form>
+    </body>
+</html>

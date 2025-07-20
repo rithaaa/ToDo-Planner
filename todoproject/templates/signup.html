@@ -1,0 +1,104 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup page</title>
+    <style>
+        *{
+            margin:0;
+            paddng:0;
+            box-sizing: border-box;
+        }
+
+        body{
+            background: url("static/images/pink-gradient.jpeg") no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+        }
+        .signup-container{
+            background: rgba(248, 246, 246, 0.85);
+            padding: 12px 8px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        .signup-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        form input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        form input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        form button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <div class='signup-container'>
+        <h2>Sign Up</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>First name</label>
+            {% render_field userForm.first_name %}
+
+            <label>Last name</label>
+            {% render_field userForm.last_name %}
+
+            <label>Username</label>
+            {% render_field userForm.username %}
+
+            <label>Password</label>
+            {% render_field userForm.password %}
+
+            <label>Email</label>
+            {% render_field detailForm.email %}
+
+            <label>Phone</label>
+            {% render_field detailForm.phone %}
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <style>
+      * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: url("static/images/pink-gradient.jpeg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      background-color:rgb(214, 214, 214);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background:rgb(250, 243, 247);
+      padding: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #000000;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      margin-top:10px;
+      color: #000000;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #cccccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .forgot-password {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .forgot-password a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+    
+  <div class="login-container">
+    <form form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2>Login</h2>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        {% render_field form.username %}
+
+        <label for="password">Password</label>
+        {% render_field form.password %}
+
+        </div>
+
+      <button type="submit" class="login-btn">Login</button>
+
+      <div class="forgot-password">
+        <a href="{% url 'forgpass' %}">Forgot Password?</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

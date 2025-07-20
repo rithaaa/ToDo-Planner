@@ -1,0 +1,153 @@
+{% comment %} <!DOCTYPE html>
+<html>
+    <head>
+        <title>Home page</title>
+    </head>
+    <style>
+        h3 {
+            color: blue;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            3
+            background-color: #B8B8B8;
+            padding: 10px 20px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar li {
+            display: inline;
+        }
+
+        h1, h2, h3 {
+            margin: 0;
+        }
+    </style>
+    <body>
+
+        <div class="navbar">
+        <ul>
+        <h1>ToDo!!!</h1>
+        <h3>Welcome</h3>
+        <li><p>Home</p></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'signup' %}">SignUp</a></li></ul>
+        
+        </div>
+    </body>
+</html> {% endcomment %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home | To Do</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .overlay {
+            background-color: rgba(255, 255, 255, 0.6);
+            background: url('static/images/pink-gradient.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            color: #fff;
+        }
+
+        .navbar h1 {
+            font-size: 32px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #fff;
+            padding: 8px 16px;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            border-color: #fff;
+            <!-- background-color: rgba(255, 255, 255, 0.1); -->
+        }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay">
+        <nav class="navbar">
+            <h1>Task Flow</h1>
+            <ul>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            </ul>
+        </nav>
+
+        <section class="hero">
+            <h2>Welcome To Task Flow App</h2>
+            <p>Stay Organized. Get Things Done.</p>
+            <p>Create tasks, set reminders, and boost your productivity – all in one place.</p>
+        </section>
+    </div>
+
+</body>
+</html>
