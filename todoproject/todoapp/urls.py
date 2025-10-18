@@ -11,4 +11,8 @@ urlpatterns=[
     path('edit/<int:pk>',views.Edit,name='edit'),
     path('delete/<int:pk>',views.Delete,name='delete'),
     path('forgetpassword',views.Forgpass,name='forgpass'),
+    path('today/', views.today_view, name='today'),       # Connects {% url 'today' %}
+    path('upcoming/', views.upcoming_view, name='upcoming'), # Connects {% url 'upcoming' %}
+    path('completed/', views.completed_view, name='completed'), # Connects {% url 'completed' %}
+    path('settings/', views.settings_view, name='settings'), # Connects {% url 'settings' %}
 ]

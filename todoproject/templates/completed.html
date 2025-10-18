@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Flow | Completed</title>
+    <style>
+        /* --- Styles: Combined from today.html for consistency --- */
+        :root {
+            --primary-color: #00796B; 
+            --background-light: #F8F9FA;
+            --text-dark: #212529;
+            --card-bg: #FFFFFF;
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --delete-color: #DC3545; 
+            --edit-color: #17A2B8;
+            --low-priority: #28A745; 
+            --high-priority: #FFC107; 
+            --completed-color: #1AAB8B; /* Darker Green for success */
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background-light);
+            margin: 0;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+        }
+
+        .sidebar {
+            background-color: var(--card-bg);
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar h1 {
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            font-size: 24px;
+        }
+
+        .sidebar-nav {
+            width: 100%;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+            border-left: 5px solid transparent;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav .active {
+            background-color: rgba(0, 121, 107, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 5px solid var(--low-priority); 
+            opacity: 0.8; /* Make completed tasks slightly translucent */
+        }
+        
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            opacity: 1;
+        }
+
+        .task-card.completed {
+            border-left-color: var(--completed-color);
+            background-color: #F0FFF0; /* Very light green background */
+        }
+
+        .task-info {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+        
+        .task-info input[type="checkbox"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--completed-color);
+        }
+
+        .task-details h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-decoration: line-through; /* Strikethrough completed tasks */
+            color: #6C757D;
+        }
+
+        .task-details p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-action, .add-button {
+            padding: 8px 15px;
+            font-size: 14px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1.2); 
+            display: inline-block;
+        }
+        
+        .btn-action:hover, .add-button:hover {
+            transform: scale(1.05); 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Specific styles for completed page actions */
+        .btn-restore { background-color: var(--edit-color); }
+        .btn-delete-perm { 
+            background-color: var(--delete-color); 
+            opacity: 1;
+        }
+        
+        .add-button { background-color: var(--primary-color); }
+        .add-button-in-header {
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .filter-options select {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #CED4DA;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        
+        <div class="sidebar">
+            <h1>Task Flow</h1>
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard' %}">My Tasks</a>
+                <a href="{% url 'today' %}">Today</a>
+                <a href="{% url 'upcoming' %}">Upcoming</a>
+                <a href="#" class="active">Completed</a>
+                <a href="{% url 'settings' %}">Settings</a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <header class="header">
+                <h2>Completed Tasks <span style="color: var(--completed-color);"> ({{ completed_task_count }})</span></h2>
+                <button class="btn-action btn-delete-perm add-button-in-header">
+                    Clear All
+                </button>
+            </header>
+            
+            <!-- Feature: Filtering for completed tasks -->
+            <div class="filter-options">
+                <select>
+                    <option>Filter by Date</option>
+                    <option>Last 7 Days</option>
+                    <option>Last 30 Days</option>
+                    <option>This Year</option>
+                </select>
+                <select>
+                    <option>Filter by Category</option>
+                    <option>Work</option>
+                    <option>Personal</option>
+                </select>
+            </div>
+
+            <div class="task-list">
+                <!-- Loop through completed tasks -->
+                {% for t in completed_tasks %}
+                <div class="task-card completed">
+                    <div class="task-info">
+                        <input type="checkbox" checked> 
+                        <div class="task-details">
+                            <h4>{{ t.name }}</h4>
+                            <p>Completed: {{ t.completion_date }}</p> 
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <a href="{% url 'restore' t.id %}" class="btn-action btn-restore">Restore</a>
+                        <a href="{% url 'delete_permanent' t.id %}" class="btn-action btn-delete-perm">Delete</a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="task-card" style="opacity: 1; border-left: 5px solid var(--completed-color);">
+                    <div class="task-info">
+                        <div class="task-details">
+                            <h4>Get to work! You haven't completed anything yet. 🧐</h4>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Example Placeholder -->
+                <div class="task-card completed">
+                    <div class="task-info">
+                        <input type="checkbox" checked> 
+                        <div class="task-details">
+                            <h4>Design the new dashboard UI</h4>
+                            <p>Completed: Oct 18, 2025</p> 
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <a href="#" class="btn-action btn-restore">Restore</a>
+                        <a href="#" class="btn-action btn-delete-perm">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Flow | Settings</title>
+    <style>
+        /* --- Styles: Combined from today.html for consistency --- */
+        :root {
+            --primary-color: #00796B; 
+            --background-light: #F8F9FA;
+            --text-dark: #212529;
+            --card-bg: #FFFFFF;
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --delete-color: #DC3545; 
+            --edit-color: #17A2B8;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background-light);
+            margin: 0;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+        }
+
+        .sidebar {
+            background-color: var(--card-bg);
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar h1 {
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            font-size: 24px;
+        }
+
+        .sidebar-nav {
+            width: 100%;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+            border-left: 5px solid transparent;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav .active {
+            background-color: rgba(0, 121, 107, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 0;
+        }
+        
+        /* Settings Specific Styles */
+        .settings-container {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow-subtle);
+            display: flex;
+            min-height: 500px;
+        }
+
+        .settings-nav {
+            width: 200px;
+            padding: 20px 0;
+            border-right: 1px solid #E9ECEF;
+        }
+        .settings-nav button {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            text-align: left;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-dark);
+            transition: background 0.2s;
+        }
+        .settings-nav button:hover, .settings-nav .active-tab {
+            background-color: #F1F3F5;
+            color: var(--primary-color);
+        }
+
+        .settings-content {
+            flex-grow: 1;
+            padding: 30px;
+        }
+
+        .setting-section h3 {
+            border-bottom: 1px solid #E9ECEF;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            max-width: 350px;
+            padding: 10px;
+            border: 1px solid #CED4DA;
+            border-radius: 6px;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus {
+             border-color: var(--primary-color);
+             outline: none;
+        }
+
+        .save-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .save-btn:hover {
+            background-color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        
+        <div class="sidebar">
+            <h1>Task Flow</h1>
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard' %}">My Tasks</a>
+                <a href="{% url 'today' %}">Today</a>
+                <a href="{% url 'upcoming' %}">Upcoming</a>
+                <a href="{% url 'completed' %}">Completed</a>
+                <a href="#" class="active">Settings</a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <header class="header">
+                <h2>App Settings</h2>
+            </header>
+            
+            <div class="settings-container">
+                <nav class="settings-nav">
+                    <button class="active-tab" data-tab="profile">Profile</button>
+                    <button data-tab="account">Account</button>
+                    <button data-tab="notifications">Notifications</button>
+                    <button data-tab="categories">Categories</button>
+                </nav>
+
+                <div class="settings-content">
+                    <!-- Feature: Profile Tab -->
+                    <div id="profile" class="setting-section">
+                        <h3>General Information</h3>
+                        <form>
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" value="User">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" value="Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" value="user@example.com">
+                            </div>
+                            <button type="submit" class="save-btn">Save Profile</button>
+                        </form>
+                    </div>
+
+                    <!-- Feature: Account Tab -->
+                    <div id="account" class="setting-section" style="display: none;">
+                        <h3>Account & Security</h3>
+                        <form>
+                            <div class="form-group">
+                                <label for="oldPassword">Current Password</label>
+                                <input type="password" id="oldPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" id="newPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <input type="password" id="confirmPassword">
+                            </div>
+                            <button type="submit" class="save-btn">Change Password</button>
+                            
+                            <hr style="margin: 30px 0;">
+                            
+                            <!-- Dangerous Action -->
+                            <h4 style="color: var(--delete-color); margin-bottom: 15px;">Danger Zone</h4>
+                            <button type="button" class="btn-action btn-delete" style="width: auto;">Delete Account Permanently</button>
+                        </form>
+                    </div>
+
+                    <!-- Feature: Notifications Tab -->
+                    <div id="notifications" class="setting-section" style="display: none;">
+                        <h3>Notification Preferences</h3>
+                        <form>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" checked style="margin-right: 10px;">
+                                    Email reminder for tasks due tomorrow
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" style="margin-right: 10px;">
+                                    In-app badge notification for high-priority tasks
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" checked style="margin-right: 10px;">
+                                    Daily summary email at 8:00 AM
+                                </label>
+                            </div>
+                            <button type="submit" class="save-btn">Update Notifications</button>
+                        </form>
+                    </div>
+
+                    <!-- Feature: Categories Tab -->
+                    <div id="categories" class="setting-section" style="display: none;">
+                        <h3>Manage Task Categories</h3>
+                        <div style="margin-bottom: 20px;">
+                            <span style="display: inline-block; background: #E6E6FA; padding: 5px 10px; border-radius: 5px; margin-right: 10px;">Work</span>
+                            <span style="display: inline-block; background: #FAFAD2; padding: 5px 10px; border-radius: 5px; margin-right: 10px;">Personal</span>
+                            <span style="display: inline-block; background: #ADD8E6; padding: 5px 10px; border-radius: 5px; margin-right: 10px;">Finance</span>
+                        </div>
+                        <form>
+                            <div class="form-group">
+                                <label for="newCategory">Add New Category</label>
+                                <input type="text" id="newCategory" placeholder="e.g., Health, Education">
+                            </div>
+                            <button type="submit" class="save-btn">Add Category</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIMPLE JAVASCRIPT FOR TAB SWITCHING (Since Django template logic is server-side) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navButtons = document.querySelectorAll('.settings-nav button');
+            const sections = document.querySelectorAll('.setting-section');
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.getAttribute('data-tab');
+
+                    // Remove active class from all buttons and hide all sections
+                    navButtons.forEach(btn => btn.classList.remove('active-tab'));
+                    sections.forEach(section => section.style.display = 'none');
+
+                    // Add active class to the clicked button
+                    button.classList.add('active-tab');
+
+                    // Show the target section
+                    document.getElementById(targetTab).style.display = 'block';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
