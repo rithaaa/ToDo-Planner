@@ -2,86 +2,105 @@
 <!DOCTYPE html>
 <html>
     <head>
-            <title>Add Task page</title>
-    </head>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background: url('static/images/home.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            background-color:rgb(236, 137, 137);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif; 
-        }
-        form {
-            background-color: white;
-            padding: 30px 40px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-        }
+        <title>Add Task</title>
+        <style>
+            :root {
+                --primary-color: #00796B; /* Teal */
+                --background-light: #E9ECEF; /* Soft Grey Background */
+                --text-dark: #212529;
+                --shadow-medium: 0 6px 20px rgba(0, 0, 0, 0.1);
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+                background-color: var(--background-light);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            }
 
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
+            .form-card {
+                background-color: white;
+                padding: 30px 40px;
+                border-radius: 12px;
+                box-shadow: var(--shadow-medium);
+                width: 100%;
+                max-width: 450px;
+                box-sizing: border-box;
+            }
 
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-            color: #555;
-        }
+            h2 {
+                text-align: center;
+                color: var(--primary-color);
+                margin-bottom: 25px;
+                font-weight: 700;
+            }
 
-        input[type="text"],
-        input[type="date"] {
-            width: 100%;
-            padding: 8px;
-            margin-top: 6px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
+            label {
+                display: block;
+                margin-top: 20px;
+                margin-bottom: 5px;
+                font-weight: 600;
+                color: var(--text-dark);
+                font-size: 15px;
+            }
 
-        button {
-            margin-top: 20px;
-            width: 100%;
-            padding: 10px;
-            background-color: #000;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 15px;
-            cursor: pointer;
-        }
+            input[type="text"],
+            input[type="date"] {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #CED4DA;
+                border-radius: 6px;
+                font-size: 16px;
+                box-sizing: border-box;
+                transition: border-color 0.2s, box-shadow 0.2s;
+            }
+            
+            input[type="text"]:focus,
+            input[type="date"]:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2);
+                outline: none;
+            }
 
-        button:hover {
-            background-color: #333;
-        }
-    </style>
+            button {
+                margin-top: 30px;
+                width: 100%;
+                padding: 12px;
+                background-color: var(--primary-color);
+                color: #fff;
+                border: none;
+                border-radius: 6px;
+                font-size: 17px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: background-color 0.3s;
+            }
+
+            button:hover {
+                background-color: #004d40;
+            }
+        </style>
 
     <body>
 
-        <form method='POST'>
-            {% csrf_token %}
+        <div class="form-card">
+            <form method='POST'>
+                {% csrf_token %}
 
-            <h2>Add Task</h2>
+                <h2>Add New Task</h2>
 
-            <label>Enter your task</label>
-            {% render_field addtaskform.name %}
+                <label for="{{ addtaskform.name.id_for_label }}">Task Name</label>
+                {% render_field addtaskform.name class="task-input" placeholder="e.g., Finish project report" %}
 
-            <label>Enter date</label>
-            {% render_field addtaskform.date %}
+                <label for="{{ addtaskform.date.id_for_label }}">Due Date</label>
+                {% render_field addtaskform.date class="date-input" type="date" %}
 
-            <button type='submit'>Submit</button>
-        </form>
+                <button type='submit'>Submit Task</button>
+            </form>
+        </div>
     </body>
 </html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Flow | Upcoming</title>
+    <style>
+        /* --- Styles: Combined from today.html for consistency --- */
+        :root {
+            --primary-color: #00796B; 
+            --background-light: #F8F9FA;
+            --text-dark: #212529;
+            --card-bg: #FFFFFF;
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --delete-color: #DC3545; 
+            --edit-color: #17A2B8;
+            --low-priority: #28A745; 
+            --high-priority: #FFC107; 
+            --upcoming-color: #00BFFF; /* Deep sky blue for forward planning */
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background-light);
+            margin: 0;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+        }
+
+        .sidebar {
+            background-color: var(--card-bg);
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar h1 {
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            font-size: 24px;
+        }
+
+        .sidebar-nav {
+            width: 100%;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+            border-left: 5px solid transparent;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav .active {
+            background-color: rgba(0, 121, 107, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 5px solid var(--low-priority); 
+        }
+        
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-card.priority-high { border-left-color: var(--delete-color); }
+        .task-card.priority-medium { border-left-color: var(--high-priority); }
+        .task-card.upcoming { border-left-color: var(--upcoming-color); }
+
+        .task-info {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+        
+        .task-info input[type="checkbox"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary-color);
+        }
+
+        .task-details h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .task-details p {
+            font-size: 14px;
+            color: #6C757D;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-action, .add-button {
+            padding: 8px 15px;
+            font-size: 14px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1.2); 
+            display: inline-block;
+        }
+        
+        .btn-action:hover, .add-button:hover {
+            transform: scale(1.05); 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-edit { background-color: var(--edit-color); }
+        .btn-delete { background-color: var(--delete-color); }
+        .add-button { background-color: var(--primary-color); }
+        .add-button-in-header {
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+        
+        /* Specific Upcoming styles */
+        .date-group {
+            margin-bottom: 30px;
+        }
+        .date-group h3 {
+            border-bottom: 2px solid #E9ECEF;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        
+        <div class="sidebar">
+            <h1>Task Flow</h1>
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard' %}">My Tasks</a>
+                <a href="{% url 'today' %}">Today</a>
+                <a href="#" class="active">Upcoming</a>
+                <a href="{% url 'completed' %}">Completed</a>
+                <a href="{% url 'settings' %}">Settings</a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <header class="header">
+                <h2>Upcoming Tasks <span style="color: var(--upcoming-color);"> ({{ upcoming_task_count }})</span></h2>
+                <a href="{% url 'Add_Task' %}" class="add-button add-button-in-header">
+                    + Add Task
+                </a>
+            </header>
+            
+            <!-- Feature: Categorized Upcoming Tasks -->
+            <div class="date-group">
+                <h3>Next 7 Days (Week of Oct 21)</h3>
+                <div class="task-list">
+                    <!-- Loop through tasks due in the next 7 days -->
+                    {% for t in upcoming_week_tasks %}
+                    <div class="task-card upcoming priority-medium">
+                        <div class="task-info">
+                            <input type="checkbox"> 
+                            <div class="task-details">
+                                <h4>{{ t.name }}</h4>
+                                <p>Due: {{ t.date }} | Priority: Medium</p> 
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <a href="{% url 'edit' t.id %}" class="btn-action btn-edit">Edit</a>
+                            <a href="{% url 'delete' t.id %}" class="btn-action btn-delete">Delete</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p style="color: #6C757D; margin-left: 10px;">Nothing due next week. Keep it that way! 👍</p>
+                    {% endfor %}
+                    
+                    <!-- Example Placeholder -->
+                    <div class="task-card upcoming priority-medium">
+                        <div class="task-info">
+                            <input type="checkbox"> 
+                            <div class="task-details">
+                                <h4>Plan Q4 Budget Review</h4>
+                                <p>Due: Oct 25, 2025 | Priority: Medium</p> 
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <a href="#" class="btn-action btn-edit">Edit</a>
+                            <a href="#" class="btn-action btn-delete">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="date-group">
+                <h3>Later This Month</h3>
+                <div class="task-list">
+                    <!-- Loop through tasks due later this month -->
+                    {% for t in upcoming_month_tasks %}
+                    <div class="task-card upcoming priority-low">
+                        <div class="task-info">
+                            <input type="checkbox"> 
+                            <div class="task-details">
+                                <h4>{{ t.name }}</h4>
+                                <p>Due: {{ t.date }} | Priority: Low</p> 
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <a href="{% url 'edit' t.id %}" class="btn-action btn-edit">Edit</a>
+                            <a href="{% url 'delete' t.id %}" class="btn-action btn-delete">Delete</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- Example Placeholder -->
+                    <div class="task-card upcoming priority-low">
+                        <div class="task-info">
+                            <input type="checkbox"> 
+                            <div class="task-details">
+                                <h4>Book Winter Holiday Trip</h4>
+                                <p>Due: Oct 30, 2025 | Priority: Low</p> 
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <a href="#" class="btn-action btn-edit">Edit</a>
+                            <a href="#" class="btn-action btn-delete">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

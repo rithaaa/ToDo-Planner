@@ -6,6 +6,8 @@ from . forms import TaskInfo
 from django.contrib import messages
 # Create your views here.
 
+
+
 def Hello(request):
     return HttpResponse("Hello World")
 
@@ -89,3 +91,21 @@ def Forgpass(request):
             messages.error(request,"User not found.!")
             
     return render(request,'forg.html')
+
+def today_view(request):
+    # Logic to fetch only tasks due TODAY
+    # For now, we'll just render the page
+    return render(request, 'today.html')
+
+def upcoming_view(request):
+    # Logic to fetch tasks due in the FUTURE
+    return render(request, 'upcoming.html')
+
+def completed_view(request):
+    # Logic to fetch tasks that are marked as completed
+    return render(request, 'completed.html')
+
+def settings_view(request):
+    # Logic for settings (e.g., handling forms, fetching user preferences)
+    return render(request, 'settings.html')
+
